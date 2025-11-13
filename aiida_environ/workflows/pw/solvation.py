@@ -31,21 +31,28 @@ class PwSolvationWorkChain(WorkChain, ProtocolMixin):
         spec.expose_inputs(
             EnvPwBaseWorkChain,
             namespace="base",
-            exclude=('clean_workdir'),
+            exclude=('clean_workdir', 'environ_parameters'),
             namespace_options={
                 "help": "General inputs for the `EnvPwBaseCalculation`."
             },
         )
         spec.input(
-            "environ_vacuum",
+            "base.environ_parameters",
             valid_type=Dict,
             required=False,
+            default=lambda: Dict({}),
+            help="Environ inputs shared between vacuum and solution calculations"
+        )
+        spec.input(
+            "environ_vacuum",
+            valid_type=Dict,
+            required=True,
             help="The environ inputs to run an environ simulation in vacuum",
         )
         spec.input(
             "environ_solution",
             valid_type=Dict,
-            required=False,
+            required=True,
             help="The environ inputs to run an environ simulation in solution",
         )
         spec.input(
